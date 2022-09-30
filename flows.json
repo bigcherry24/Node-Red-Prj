@@ -103,5 +103,50 @@
                 "py": 0
             }
         }
+    },
+    {
+        "id": "9e150a8ec2302dc7",
+        "type": "inject",
+        "z": "7c045d8d63dce5a0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 400,
+        "y": 300,
+        "wires": [
+            [
+                "d8718573434fbdad"
+            ]
+        ]
+    },
+    {
+        "id": "d8718573434fbdad",
+        "type": "debug",
+        "z": "7c045d8d63dce5a0",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 300,
+        "wires": []
     }
 ]
