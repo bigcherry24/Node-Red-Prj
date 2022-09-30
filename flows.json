@@ -103,5 +103,70 @@
                 "py": 0
             }
         }
+    },
+    {
+        "id": "0ff7d8d0cfb4e59c",
+        "type": "inject",
+        "z": "7c045d8d63dce5a0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 300,
+        "y": 260,
+        "wires": [
+            [
+                "10405a7c5d18649f"
+            ]
+        ]
+    },
+    {
+        "id": "c1139013d6bbc03a",
+        "type": "debug",
+        "z": "7c045d8d63dce5a0",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "10405a7c5d18649f",
+        "type": "function",
+        "z": "7c045d8d63dce5a0",
+        "name": "function 1",
+        "func": "var count=context.get('count') || 0;\ncount +=1;\nmsg.payload=\"F1 \"+msg.payload+\" \"+count;\ncontext.set('count',count);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 260,
+        "wires": [
+            [
+                "c1139013d6bbc03a"
+            ]
+        ]
     }
 ]
