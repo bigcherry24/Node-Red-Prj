@@ -1,13 +1,5 @@
 [
     {
-        "id": "7c045d8d63dce5a0",
-        "type": "tab",
-        "label": "CPU 사용량 모니터링",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "57ab0c9b346de2ed",
         "type": "tab",
         "label": "네트워크 모니터링",
@@ -115,39 +107,9 @@
         }
     },
     {
-        "id": "94ef3efa.b0b16",
-        "type": "ui_group",
-        "name": "CPU & Memory Usage Monitoring",
-        "tab": "6cc8c50b.445afc",
-        "order": 2,
-        "disp": true,
-        "width": "10",
-        "collapse": false,
-        "className": ""
-    },
-    {
-        "id": "6cc8c50b.445afc",
-        "type": "ui_tab",
-        "name": "Home",
-        "icon": "dashboard",
-        "order": 1,
-        "disabled": false,
-        "hidden": false
-    },
-    {
-        "id": "13326454a551d3b8",
-        "type": "ui_spacer",
-        "z": "7c045d8d63dce5a0",
-        "name": "spacer",
-        "group": "94ef3efa.b0b16",
-        "order": 2,
-        "width": "10",
-        "height": "1"
-    },
-    {
         "id": "8fb9e0d415cc8d8f",
         "type": "ui_tab",
-        "name": "Network",
+        "name": "Disk Usage",
         "icon": "dashboard",
         "order": 2,
         "disabled": false,
@@ -156,595 +118,34 @@
     {
         "id": "650dab8239404ec9",
         "type": "ui_group",
-        "name": "Network",
+        "name": "Disk Usage",
         "tab": "8fb9e0d415cc8d8f",
         "order": 1,
         "disp": true,
-        "width": "10",
+        "width": 16,
         "collapse": false,
         "className": ""
-    },
-    {
-        "id": "222b911b.7f483e",
-        "type": "exec",
-        "z": "7c045d8d63dce5a0",
-        "command": "awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat)",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "5",
-        "winHide": false,
-        "oldrc": false,
-        "name": "cpu usage command",
-        "x": 180,
-        "y": 340,
-        "wires": [
-            [
-                "6c078f6a.20f33"
-            ],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "3569dd52.27fd92",
-        "type": "inject",
-        "z": "7c045d8d63dce5a0",
-        "name": "*** Setup resources to fetch here ***",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"name\":\"cpu\"},{\"name\":\"mem\"}]",
-        "payloadType": "json",
-        "x": 190,
-        "y": 160,
-        "wires": [
-            [
-                "935ef4ca.1414c8"
-            ]
-        ]
-    },
-    {
-        "id": "935ef4ca.1414c8",
-        "type": "split",
-        "z": "7c045d8d63dce5a0",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 430,
-        "y": 160,
-        "wires": [
-            [
-                "801f89e0.5a45e8"
-            ]
-        ]
-    },
-    {
-        "id": "6c078f6a.20f33",
-        "type": "function",
-        "z": "7c045d8d63dce5a0",
-        "name": "update thisRsm",
-        "func": "\nmsg.thisRsm.timestamp = new Date();\nmsg.thisRsm.message = msg.payload;\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 580,
-        "y": 380,
-        "wires": [
-            [
-                "8d1f2fa0.953ce",
-                "38217bfa.ebbcd4"
-            ]
-        ]
-    },
-    {
-        "id": "835178d3.275268",
-        "type": "function",
-        "z": "7c045d8d63dce5a0",
-        "name": "update thisRsm",
-        "func": "\nmsg.thisRsm.timestamp = new Date();\nmsg.thisRsm.message = msg.payload;\nmsg.thisRsm.error = true;\nmsg.thisRsm.state = 'ng'\n\n\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 580,
-        "y": 420,
-        "wires": [
-            [
-                "682780dd.070e3",
-                "38217bfa.ebbcd4"
-            ]
-        ]
-    },
-    {
-        "id": "15d9eea6.b13c31",
-        "type": "function",
-        "z": "7c045d8d63dce5a0",
-        "name": "update thisRsm",
-        "func": "msg.thisRsm.timestamp = new Date();\nmsg.thisRsm.result = msg.payload;\nmsg.thisRsm.error = msg.payload.code !== 0;\nmsg.thisRsm.state = msg.thisRsm.error === false ? \"ok\" : \"ng\";\n\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 580,
-        "y": 460,
-        "wires": [
-            [
-                "705d8927.7a4068",
-                "38217bfa.ebbcd4"
-            ]
-        ]
-    },
-    {
-        "id": "801f89e0.5a45e8",
-        "type": "function",
-        "z": "7c045d8d63dce5a0",
-        "name": "Init thisRsm",
-        "func": "let rsmResults = flow.get(\"rsmResults\") || {}\nmsg.thisRsm = rsmResults[msg.topic] || {};\n\nmsg.thisRsm.name = msg.payload.name;\nmsg.thisRsm.timestamp = new Date();\nmsg.thisRsm.result = '';\nmsg.thisRsm.error = null;\nmsg.thisRsm.state = 'fetching';\n\nmsg.topic = msg.thisRsm.name;\n\nrsmResults[msg.topic] = msg.thisRsm;//store ping obj in rsmResults\nflow.set(\"rsmResults\",rsmResults);//save rsmResults in flow context\n\nconsole.log(msg.payload.name);\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 590,
-        "y": 160,
-        "wires": [
-            [
-                "460bf53.537a60c",
-                "b688bc8e8155bc60"
-            ]
-        ]
-    },
-    {
-        "id": "460bf53.537a60c",
-        "type": "debug",
-        "z": "7c045d8d63dce5a0",
-        "name": "msg_first",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 820,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "8d1f2fa0.953ce",
-        "type": "debug",
-        "z": "7c045d8d63dce5a0",
-        "name": "msg_normal_output",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 860,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "682780dd.070e3",
-        "type": "debug",
-        "z": "7c045d8d63dce5a0",
-        "name": "msg_error_output",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 850,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "705d8927.7a4068",
-        "type": "debug",
-        "z": "7c045d8d63dce5a0",
-        "name": "msg_return_code",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 850,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "38217bfa.ebbcd4",
-        "type": "function",
-        "z": "7c045d8d63dce5a0",
-        "name": "Update flow context",
-        "func": "let rsmResults = flow.get(\"rsmResults\") || {}\nlet thisRsm = msg.thisRsm;\n\n//store ping item\nrsmResults[thisRsm.name] = thisRsm;\n\n//save rsmResults in flow context\nflow.set(\"rsmResults\",rsmResults);\n\n//console.log(msg);\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 850,
-        "y": 560,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "81fa405b.5c169",
-        "type": "debug",
-        "z": "7c045d8d63dce5a0",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 630,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "5cb5897e.9faec8",
-        "type": "inject",
-        "z": "7c045d8d63dce5a0",
-        "name": "Inject",
-        "props": [],
-        "repeat": "1",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 90,
-        "y": 700,
-        "wires": [
-            [
-                "5cef1fce.0085d"
-            ]
-        ]
-    },
-    {
-        "id": "5cef1fce.0085d",
-        "type": "function",
-        "z": "7c045d8d63dce5a0",
-        "name": "convert rmsResults to array",
-        "func": "let rsmResults = flow.get(\"rsmResults\") || {}\n\nlet tempVal = \"0\";\nlet resourcesData = [];\n\nfor (let k in rsmResults) {\n\n    let r = rsmResults[k];\n    \n    if(r.name == \"cpu\"){\n        \n        if (typeof r.message === \"string\") \n        tempVal = r.message.replace(/\\n/g,\" \").trim();\n        \n        console.log(\"cpuTempval = \" + Math.round(tempVal*100)/100);\n        \n        r.payload = Math.round((tempVal*100)/100);\n    \n        \n    } else if(r.name == \"mem\") {\n        \n        if (typeof r.message === \"string\") \n        tempVal = r.message.trim();\n         \n        console.log(\"memTempval = \" + tempVal);\n        \n        var m = {};\n        m.labels = [\"used\", \"fee\"];\n        m.data = [[tempVal, 100 - tempVal]];\n        m.series = [\"mem\"];\n        \n        r.payload = [m];\n    }\n    \n    resourcesData.push(r);\n}\n\nmsg.resourcesData = resourcesData;\n\nconsole.log(msg);\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 380,
-        "y": 700,
-        "wires": [
-            [
-                "81fa405b.5c169",
-                "8efd02097239a558",
-                "972a6a630b0b9ce9"
-            ]
-        ]
-    },
-    {
-        "id": "83b7440f27083fdb",
-        "type": "ui_chart",
-        "z": "7c045d8d63dce5a0",
-        "name": "",
-        "group": "94ef3efa.b0b16",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "label": "CPU Usage Chart",
-        "chartType": "line",
-        "legend": "true",
-        "xformat": "HH:mm:ss",
-        "interpolate": "step",
-        "nodata": "",
-        "dot": false,
-        "ymin": "0",
-        "ymax": "100",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "60",
-        "cutout": "30",
-        "useOneColor": false,
-        "useUTC": false,
-        "colors": [
-            "#d62728",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "useDifferentColor": false,
-        "className": "",
-        "x": 770,
-        "y": 760,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "b688bc8e8155bc60",
-        "type": "switch",
-        "z": "7c045d8d63dce5a0",
-        "name": "",
-        "property": "payload.name",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "cpu",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "mem",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 530,
-        "y": 240,
-        "wires": [
-            [
-                "222b911b.7f483e"
-            ],
-            [
-                "09e8b48d91fa9bd0"
-            ]
-        ]
-    },
-    {
-        "id": "09e8b48d91fa9bd0",
-        "type": "exec",
-        "z": "7c045d8d63dce5a0",
-        "command": "free | grep Mem | awk '{print $3/$2 * 100.0}'",
-        "addpay": "",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "5",
-        "winHide": false,
-        "oldrc": false,
-        "name": "memory usage command",
-        "x": 190,
-        "y": 440,
-        "wires": [
-            [
-                "6c078f6a.20f33"
-            ],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "87f1cd69548772fa",
-        "type": "ui_chart",
-        "z": "7c045d8d63dce5a0",
-        "name": "",
-        "group": "94ef3efa.b0b16",
-        "order": 3,
-        "width": 0,
-        "height": 0,
-        "label": "memory usage chart",
-        "chartType": "pie",
-        "legend": "true",
-        "xformat": "HH:mm:ss",
-        "interpolate": "linear",
-        "nodata": "",
-        "dot": false,
-        "ymin": "",
-        "ymax": "",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "3600",
-        "cutout": "30",
-        "useOneColor": false,
-        "useUTC": false,
-        "colors": [
-            "#ff7f0e",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "useDifferentColor": false,
-        "className": "",
-        "x": 780,
-        "y": 840,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "c12e13c20ad6a393",
-        "type": "debug",
-        "z": "7c045d8d63dce5a0",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 730,
-        "y": 720,
-        "wires": []
-    },
-    {
-        "id": "0c2ed0dc2f45ebb3",
-        "type": "debug",
-        "z": "7c045d8d63dce5a0",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 730,
-        "y": 800,
-        "wires": []
-    },
-    {
-        "id": "8efd02097239a558",
-        "type": "function",
-        "z": "7c045d8d63dce5a0",
-        "name": "cpu filter",
-        "func": "return msg.resourcesData[0];",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 580,
-        "y": 760,
-        "wires": [
-            [
-                "c12e13c20ad6a393",
-                "83b7440f27083fdb"
-            ]
-        ]
-    },
-    {
-        "id": "972a6a630b0b9ce9",
-        "type": "function",
-        "z": "7c045d8d63dce5a0",
-        "name": "memory filter",
-        "func": "return msg.resourcesData[1];",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 590,
-        "y": 800,
-        "wires": [
-            [
-                "0c2ed0dc2f45ebb3",
-                "87f1cd69548772fa"
-            ]
-        ]
     },
     {
         "id": "2cc160983ecf8a0f",
         "type": "exec",
         "z": "57ab0c9b346de2ed",
-        "command": "ping -c 1",
-        "addpay": "payload",
+        "command": "df -Ph | awk -f stat.awk",
+        "addpay": "",
         "append": "",
         "useSpawn": "false",
         "timer": "5",
         "winHide": false,
         "oldrc": false,
-        "name": "",
-        "x": 220,
-        "y": 300,
+        "name": "Get Disk Usages",
+        "x": 290,
+        "y": 360,
         "wires": [
             [
                 "eed999b0aaca83ce"
             ],
-            [
-                "c42cad5629a179b4"
-            ],
-            [
-                "3193938a1e5e3d87"
-            ]
-        ]
-    },
-    {
-        "id": "63222dcddb2cb6f3",
-        "type": "inject",
-        "z": "57ab0c9b346de2ed",
-        "name": "*** Setup devices to ping here ***",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "10",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"name\":\"service 1\",\"ip\":\"127.0.0.1\"},{\"name\":\"serivce 2\",\"ip\":\"192.168.96.174\"},{\"name\":\"service 3\",\"ip\":\"mobile.skhynix.com\"},{\"name\":\"service 4\",\"ip\":\"www.chosun.com\"}]",
-        "payloadType": "json",
-        "x": 180,
-        "y": 160,
-        "wires": [
-            [
-                "1ed17a607c2b4a0b"
-            ]
-        ]
-    },
-    {
-        "id": "1ed17a607c2b4a0b",
-        "type": "split",
-        "z": "57ab0c9b346de2ed",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 430,
-        "y": 160,
-        "wires": [
-            [
-                "98534bb6e47c926c"
-            ]
+            [],
+            []
         ]
     },
     {
@@ -752,97 +153,20 @@
         "type": "function",
         "z": "57ab0c9b346de2ed",
         "name": "update thisPing",
-        "func": "\nmsg.thisPing.timestamp = new Date();\nmsg.thisPing.message = msg.payload;\n\nreturn msg;",
+        "func": "return msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 460,
+        "x": 440,
         "y": 260,
         "wires": [
             [
                 "97615107cccf12a4",
-                "51d358b44af69991"
+                "a3c8e85f550569fc"
             ]
         ]
-    },
-    {
-        "id": "c42cad5629a179b4",
-        "type": "function",
-        "z": "57ab0c9b346de2ed",
-        "name": "update thisPing",
-        "func": "\nmsg.thisPing.timestamp = new Date();\nmsg.thisPing.message = msg.payload;\nmsg.thisPing.error = true;\nmsg.thisPing.state = 'ng'\n\n\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 460,
-        "y": 300,
-        "wires": [
-            [
-                "a649271113708598",
-                "51d358b44af69991"
-            ]
-        ]
-    },
-    {
-        "id": "3193938a1e5e3d87",
-        "type": "function",
-        "z": "57ab0c9b346de2ed",
-        "name": "update thisPing",
-        "func": "msg.thisPing.timestamp = new Date();\nmsg.thisPing.result = msg.payload;\nmsg.thisPing.error = msg.payload.code !== 0;\nmsg.thisPing.state = msg.thisPing.error === false ? \"ok\" : \"ng\";\n\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 460,
-        "y": 340,
-        "wires": [
-            [
-                "d7856ffe9a11a580",
-                "51d358b44af69991"
-            ]
-        ]
-    },
-    {
-        "id": "98534bb6e47c926c",
-        "type": "function",
-        "z": "57ab0c9b346de2ed",
-        "name": "Init thisPing",
-        "func": "let pingResults = flow.get(\"pingResults\") || {}\nmsg.thisPing = pingResults[msg.topic] || {};\n\nmsg.thisPing.name = msg.payload.name;\nmsg.thisPing.ip = msg.payload.ip;\nmsg.thisPing.timestamp = new Date();\nmsg.thisPing.result = '';\nmsg.thisPing.error = null;\nmsg.thisPing.state = 'pinging';\n\nmsg.topic = msg.thisPing.name;\nmsg.payload = msg.thisPing.ip;\n\npingResults[msg.topic] = msg.thisPing;//store ping obj in pingResults\nflow.set(\"pingResults\",pingResults);//save pingResults in flow context\n\nconsole.log(msg);\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 590,
-        "y": 160,
-        "wires": [
-            [
-                "2cc160983ecf8a0f",
-                "62352987ad066dd0"
-            ]
-        ]
-    },
-    {
-        "id": "62352987ad066dd0",
-        "type": "debug",
-        "z": "57ab0c9b346de2ed",
-        "name": "msg_first",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 820,
-        "y": 160,
-        "wires": []
     },
     {
         "id": "97615107cccf12a4",
@@ -857,7 +181,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 860,
+        "x": 720,
         "y": 260,
         "wires": []
     },
@@ -874,7 +198,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 850,
+        "x": 710,
         "y": 300,
         "wires": []
     },
@@ -891,130 +215,57 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 850,
+        "x": 710,
         "y": 340,
         "wires": []
     },
     {
-        "id": "51d358b44af69991",
-        "type": "function",
-        "z": "57ab0c9b346de2ed",
-        "name": "Update flow context",
-        "func": "let pingResults = flow.get(\"pingResults\") || {}\nlet thisPing = msg.thisPing;\n\n//store ping item\npingResults[thisPing.name] = thisPing;\n\n//save pingResults in flow context\nflow.set(\"pingResults\",pingResults);\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 770,
-        "y": 400,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "9b2d3af69d515fdc",
-        "type": "template",
-        "z": "57ab0c9b346de2ed",
-        "name": "build html table",
-        "field": "html",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "\n<table width=\"100%\">\n  <tr>\n    <th>Name</th>\n    <th>IP</th> \n    <th>Status</th> \n  </tr>\n  {{#tableData}}\n  <tr class='{{rowclass}}'>\n    <td>{{{name}}}</td>\n    <td>{{ip}}</td> \n    <td>{{{stateInfo}}}</i></td> \n  </tr>\n  {{/tableData}}\n</table>",
-        "x": 600,
-        "y": 520,
-        "wires": [
-            [
-                "a4696326ffd12ef4",
-                "7e38dd417f26cff9"
-            ]
-        ]
-    },
-    {
-        "id": "a4696326ffd12ef4",
-        "type": "debug",
-        "z": "57ab0c9b346de2ed",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 810,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "6063f743dd3b30d4",
-        "type": "inject",
-        "z": "57ab0c9b346de2ed",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"name\":\"service 1\",\"ip\":\"127.0.0.1\"},{\"name\":\"serivce 2\",\"ip\":\"192.168.96.174\"},{\"name\":\"service 3\",\"ip\":\"mobile.skhynix.com\"},{\"name\":\"service 4\",\"ip\":\"www.chosun.com\"}]",
-        "payloadType": "json",
-        "x": 150,
-        "y": 520,
-        "wires": [
-            [
-                "11ccd8786789df37"
-            ]
-        ]
-    },
-    {
-        "id": "11ccd8786789df37",
-        "type": "function",
-        "z": "57ab0c9b346de2ed",
-        "name": "convert pingResults to array",
-        "func": "let pingResults = flow.get(\"pingResults\") || {}\n\nlet tableData = [];\nfor (let k in pingResults) {\n    let r = pingResults[k];\n    if(r.state == \"ok\"){\n        r.rowclass = \"good\";\n        r.stateInfo = '<i class=\"material-icons favorite\" aria-hidden=\"true\"></i> OK'\n    } else if(r.state == \"ng\") {\n         r.rowclass = \"bad\";\n        r.stateInfo = '<i class=\"material-icons pan_tool\" aria-hidden=\"true\"></i> NG'\n    } else {\n        r.rowclass = \"unknown\";\n        r.stateInfo = '<i class=\"fa question\" aria-hidden=\"true\"></i> Unknown'\n    }\n  tableData.push(r);\n}\n\n//console.log(tableData);\n\nmsg.tableData = tableData\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 360,
-        "y": 520,
-        "wires": [
-            [
-                "9b2d3af69d515fdc"
-            ]
-        ]
-    },
-    {
-        "id": "7e38dd417f26cff9",
+        "id": "a3c8e85f550569fc",
         "type": "ui_template",
         "z": "57ab0c9b346de2ed",
         "group": "650dab8239404ec9",
         "name": "",
-        "order": 4,
-        "width": "10",
-        "height": "10",
-        "format": "<style>\ntable {\n    color: #333;\n    font-family: Helvetica, Arial, sans-serif;\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n}\ntd, th {\n    border: 1px solid transparent;\n    /* No more visible border */\n    height: 30px;\n    transition: all 0.3s;\n    /* Simple transition for hover effect */\n}\nth {\n    background: #DFDFDF;\n    /* Darken header a bit */\n    font-weight: bold;\n}\ntd {\n    background: #FAFAFA;\n    text-align: center;\n}\n\n/* Cells in even rows (2,4,6...) are one color */\n\ntr:nth-child(even) td {\n    background: #F1F1F1;\n}\n\n/* Cells in odd rows (1,3,5...) are another (excludes header cells)  */\n\ntr:nth-child(odd) td {\n    background: #FEFEFE;\n}\ntr td:hover {\n    background: #666;\n    color: #FFF;\n}\n\n/* Hover cell effect! */    \n\ntr.good {\n    color: blue;\n}\n\ntr.bad {\n    color: red;\n}\n\ntr.unknown {\n    color: orange;\n}\n\n    \n</style>\n<div ng-bind-html=\"msg.html\"></div>\n",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\ntable {\n    color: #333;\n    font-family: Helvetica, Arial, sans-serif;\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n}\n\nth {\n    background: #DFDFDF;\n    /* Darken header a bit */\n    font-weight: bold;\n}\n\n\n</style>\n<div ng-bind-html=\"msg.payload\"></div>",
         "storeOutMessages": true,
         "fwdInMessages": true,
-        "resendOnRefresh": false,
+        "resendOnRefresh": true,
         "templateScope": "local",
         "className": "",
-        "x": 820,
-        "y": 520,
+        "x": 520,
+        "y": 440,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "0a9a47a0f23cd999",
+        "type": "ui_button",
+        "z": "57ab0c9b346de2ed",
+        "name": "Refresh",
+        "group": "650dab8239404ec9",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "passthru": false,
+        "label": "Refresh",
+        "tooltip": "retrieve latest info.",
+        "color": "white",
+        "bgcolor": "red",
+        "className": "",
+        "icon": "autorenew",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 100,
+        "y": 160,
+        "wires": [
+            [
+                "2cc160983ecf8a0f"
+            ]
         ]
     }
 ]
