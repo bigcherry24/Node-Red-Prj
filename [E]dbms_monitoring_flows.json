@@ -1,0 +1,277 @@
+[
+    {
+        "id": "7a5c6b3ba24e3bd5",
+        "type": "tab",
+        "label": "DMBS 상태 모니터링",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "86ab4360.50c6c",
+        "type": "function",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "Criteria",
+        "func": "var timeE = msg.payload;\n//Restrict the query to pull the last 24hrs\n//of data instead of the whole db\nmsg.payload = (timeE - (1000*60*60*24));\n    node.status({text:msg.payload});\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 300,
+        "y": 340,
+        "wires": [
+            [
+                "308dd6b1.2a193a"
+            ]
+        ]
+    },
+    {
+        "id": "11c8f8a2.d97147",
+        "type": "template",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "Format query 2",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT\n CEILING(time/3600000)*3600000 AS timestamp,\n AVG(data1) AS `data1`,\n AVG(data2) AS `data2`\nFROM NODERED_PERFTEST\nWHERE time > {{payload}}\nGROUP BY `timestamp`;",
+        "output": "str",
+        "x": 500,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "272494b.eb3d36c",
+        "type": "inject",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "Timestamp",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 300,
+        "wires": [
+            [
+                "86ab4360.50c6c"
+            ]
+        ]
+    },
+    {
+        "id": "755e08a5.08de88",
+        "type": "comment",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "Flow to query database and format for chart",
+        "info": "",
+        "x": 350,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "d59a31e8.d3772",
+        "type": "template",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "Format data",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "INSERT INTO `NODERED_PERFTEST` VALUES ({{data1}},{{data2}},{{time}})",
+        "output": "str",
+        "x": 481,
+        "y": 180,
+        "wires": [
+            [
+                "433d9ca4.076774"
+            ]
+        ]
+    },
+    {
+        "id": "2b71188f.3e2428",
+        "type": "comment",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "Flow to insert data into the database",
+        "info": "",
+        "x": 320,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "308dd6b1.2a193a",
+        "type": "template",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "Format query 1",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "SELECT data1,data2, time as timestamp FROM NODERED_PERFTEST WHERE time > {{payload}}",
+        "output": "str",
+        "x": 500,
+        "y": 300,
+        "wires": [
+            [
+                "2a63c806.ae4db8"
+            ]
+        ]
+    },
+    {
+        "id": "2a63c806.ae4db8",
+        "type": "mysql",
+        "z": "7a5c6b3ba24e3bd5",
+        "mydb": "a844720c.608d6",
+        "name": "MYSQL",
+        "x": 658,
+        "y": 349,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "433d9ca4.076774",
+        "type": "mysql",
+        "z": "7a5c6b3ba24e3bd5",
+        "mydb": "a844720c.608d6",
+        "name": "MYSQL",
+        "x": 634,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a6de14220709a393",
+        "type": "inject",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "",
+        "props": [
+            {
+                "p": "time",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 150,
+        "y": 180,
+        "wires": [
+            [
+                "c17b52ea100f8680"
+            ]
+        ]
+    },
+    {
+        "id": "c17b52ea100f8680",
+        "type": "function",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "function 1",
+        "func": "msg.data1 = Math.floor(Math.random() * 100);\nmsg.data2 = Math.floor(Math.random() * 100)\n//msg.timestamp = 'NOW()';\n\n//console.log(msg);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 180,
+        "wires": [
+            [
+                "d59a31e8.d3772"
+            ]
+        ]
+    },
+    {
+        "id": "f0d4fb4b33cbe647",
+        "type": "catch",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "",
+        "scope": [
+            "2a63c806.ae4db8",
+            "433d9ca4.076774"
+        ],
+        "uncaught": false,
+        "x": 250,
+        "y": 480,
+        "wires": [
+            [
+                "ac324bcdd345093b",
+                "44736db9232f8d28"
+            ]
+        ]
+    },
+    {
+        "id": "ac324bcdd345093b",
+        "type": "debug",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "5da39ab8e6f63472",
+        "type": "e-mail",
+        "z": "7a5c6b3ba24e3bd5",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "aurakim24@gmail.com",
+        "dname": "",
+        "x": 620,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "44736db9232f8d28",
+        "type": "function",
+        "z": "7a5c6b3ba24e3bd5",
+        "name": "Error Message 치환",
+        "func": "msg.topic = \"DBMS 오류 발생 알림\";\n\n//var today = new Date();\n//today.setHours(today.getHours() + 9);\n//msg.payload = msg.payload.replace(/time/g, today.toISOString());\n\nmsg.payload = msg.error.message;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 580,
+        "wires": [
+            [
+                "5da39ab8e6f63472"
+            ]
+        ]
+    },
+    {
+        "id": "a844720c.608d6",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "localhost",
+        "port": "3306",
+        "db": "NODERED",
+        "tz": "",
+        "charset": "",
+        "credentials": {}
+    }
+]

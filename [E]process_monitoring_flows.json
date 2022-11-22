@@ -1,0 +1,167 @@
+[
+    {
+        "id": "57ab0c9b346de2ed",
+        "type": "tab",
+        "label": "프로세스 모니터링",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2cc160983ecf8a0f",
+        "type": "exec",
+        "z": "57ab0c9b346de2ed",
+        "command": "ps aux | awk -f /home/vagrant/.node-red/stat_p.awk",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "5",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Get Process Info",
+        "x": 330,
+        "y": 240,
+        "wires": [
+            [
+                "eed999b0aaca83ce"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "eed999b0aaca83ce",
+        "type": "function",
+        "z": "57ab0c9b346de2ed",
+        "name": "update msg",
+        "func": "return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 240,
+        "wires": [
+            [
+                "97615107cccf12a4",
+                "a3c8e85f550569fc"
+            ]
+        ]
+    },
+    {
+        "id": "97615107cccf12a4",
+        "type": "debug",
+        "z": "57ab0c9b346de2ed",
+        "name": "msg_normal_output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a3c8e85f550569fc",
+        "type": "ui_template",
+        "z": "57ab0c9b346de2ed",
+        "group": "650dab8239404ec9",
+        "name": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\ntable {\n    color: #000;\n    font-family: Helvetica, Arial, sans-serif;\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 1;\n}\n\nth {\n    background: #DFDFDF;\n    /* Darken header a bit */\n    font-weight: bold;\n}\n\ntd {\n    background: #000000;\n    /* Darken header a bit */\n    color : white; \n}\n\n.red {\n    background: #FF0000;\n    /* Darken header a bit */\n    color : white; \n}\n\n\n</style>\n<div ng-bind-html=\"msg.payload\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 720,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0a9a47a0f23cd999",
+        "type": "ui_button",
+        "z": "57ab0c9b346de2ed",
+        "name": "Refresh",
+        "group": "650dab8239404ec9",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "Refresh",
+        "tooltip": "retrieve latest info.",
+        "color": "white",
+        "bgcolor": "grey",
+        "className": "",
+        "icon": "autorenew",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 120,
+        "y": 180,
+        "wires": [
+            [
+                "2cc160983ecf8a0f"
+            ]
+        ]
+    },
+    {
+        "id": "f7168d8cd68652de",
+        "type": "inject",
+        "z": "57ab0c9b346de2ed",
+        "name": "Inject",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "2cc160983ecf8a0f"
+            ]
+        ]
+    },
+    {
+        "id": "650dab8239404ec9",
+        "type": "ui_group",
+        "name": "Process Monitoring",
+        "tab": "8fb9e0d415cc8d8f",
+        "order": 1,
+        "disp": true,
+        "width": 16,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8fb9e0d415cc8d8f",
+        "type": "ui_tab",
+        "name": "Process Monitoring",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]

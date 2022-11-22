@@ -1,0 +1,809 @@
+[
+    {
+        "id": "57ab0c9b346de2ed",
+        "type": "tab",
+        "label": "batch Job 모니터링",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "96a4003769b104e6",
+        "type": "debug",
+        "z": "57ab0c9b346de2ed",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "fa46da0744e0d6f8",
+        "type": "watch",
+        "z": "57ab0c9b346de2ed",
+        "name": "batchjobs inspect",
+        "files": "/home/vagrant/.node-red/batchjob/",
+        "recursive": true,
+        "x": 200,
+        "y": 220,
+        "wires": [
+            [
+                "96a4003769b104e6",
+                "870137e0ac96e0f9"
+            ]
+        ]
+    },
+    {
+        "id": "caf19583388b6467",
+        "type": "ui_text",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "order": 2,
+        "width": 10,
+        "height": 1,
+        "name": "job1",
+        "label": "1. job1.sh",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 510,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "870137e0ac96e0f9",
+        "type": "switch",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "job1.sh.log",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "job2.sh.log",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "job3.sh.log",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "job4.sh.log",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "job5.sh.log",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 5,
+        "x": 310,
+        "y": 360,
+        "wires": [
+            [
+                "caf19583388b6467",
+                "32a6907701225975"
+            ],
+            [
+                "e06357fc383730c2",
+                "f41cf2450394d36f"
+            ],
+            [
+                "d599f5e922e23413",
+                "d552a0baece80502"
+            ],
+            [
+                "d100930594ba23ad",
+                "0bfced5915aa3e47"
+            ],
+            [
+                "0d77a95f34a30860",
+                "059200e3d003f1bb"
+            ]
+        ]
+    },
+    {
+        "id": "e06357fc383730c2",
+        "type": "ui_text",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "order": 5,
+        "width": 10,
+        "height": 1,
+        "name": "job2",
+        "label": "2. job2.sh",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 510,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "24321426f9e3ce75",
+        "type": "ui_date_picker",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "label": "Date",
+        "group": "c27d34ccca1ec50f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 390,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "32a6907701225975",
+        "type": "file in",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "filename": "filename",
+        "filenameType": "msg",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 520,
+        "y": 400,
+        "wires": [
+            [
+                "0c2c98ec1bb8ca60"
+            ]
+        ]
+    },
+    {
+        "id": "f41cf2450394d36f",
+        "type": "file in",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "filename": "filename",
+        "filenameType": "msg",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 520,
+        "y": 480,
+        "wires": [
+            [
+                "7116b695ca0b4881"
+            ]
+        ]
+    },
+    {
+        "id": "7116b695ca0b4881",
+        "type": "change",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "str",
+                "to": "<p>result : <span class=spfalse>false</span>.  [ time ]</p></p>",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "str",
+                "to": "<p>result : <span class=sptrue>true</span>.  [ time ]</p></p>",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 700,
+        "y": 480,
+        "wires": [
+            [
+                "e95e11e7f22c11bb"
+            ]
+        ]
+    },
+    {
+        "id": "ca056075d190e5a2",
+        "type": "ui_template",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "name": "job2 result",
+        "order": 6,
+        "width": 6,
+        "height": 1,
+        "format": "<style>\ntable {\n    color: #333;\n    font-family: Helvetica, Arial, sans-serif;\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n}\n\nth {\n    background: #DFDFDF;\n    /* Darken header a bit */\n    font-weight: bold;\n}\n\n.spfalse {\n    color: #FF0000;\n    font-weight: bold;\n}\n.sptrue {\n    color: #0000FF;\n    font-weight: bold;\n}\n\n</style>\n\n<div style=\"display: table; height: 400px; overflow: hidden;\">\n  <div style=\"display: table-cell; vertical-align: middle;\">\n   <div ng-bind-html=\"msg.payload\"></div>\n  </div>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1050,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0c2c98ec1bb8ca60",
+        "type": "change",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "str",
+                "to": "<p>result : <span class=spfalse>false</span>. [ time ]</p>",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "str",
+                "to": "<p>result : <span class=sptrue>true</span>. [ time ]</p>",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 700,
+        "y": 400,
+        "wires": [
+            [
+                "0d12095de46c5263"
+            ]
+        ]
+    },
+    {
+        "id": "1719fb1155ecdaa8",
+        "type": "ui_template",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "name": "job1 result",
+        "order": 3,
+        "width": 6,
+        "height": 1,
+        "format": "<style>\ntable {\n    color: #333;\n    font-family: Helvetica, Arial, sans-serif;\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n}\n\nth {\n    background: #DFDFDF;\n    /* Darken header a bit */\n    font-weight: bold;\n}\n\n.spfalse {\n    color: #FF0000;\n    font-weight: bold;\n\n}\n.sptrue {\n    color: #0000FF;\n    font-weight: bold;\n}\n\n\n</style>\n\n<div style=\"display: table; height: 400px; overflow: hidden;\">\n  <div style=\"display: table-cell; vertical-align: middle;\">\n   <div ng-bind-html=\"msg.payload\"></div>\n  </div>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1050,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0d12095de46c5263",
+        "type": "function",
+        "z": "57ab0c9b346de2ed",
+        "name": "function 1",
+        "func": "msg.topic = \"batch job 1의 동작 결과\";\n\nvar today = new Date();\ntoday.setHours(today.getHours() + 9);\n\nmsg.payload = msg.payload.replace(/time/g, today.toISOString());\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 400,
+        "wires": [
+            [
+                "1719fb1155ecdaa8",
+                "6ce6fa301c20f0ee"
+            ]
+        ]
+    },
+    {
+        "id": "e95e11e7f22c11bb",
+        "type": "function",
+        "z": "57ab0c9b346de2ed",
+        "name": "function 2",
+        "func": "msg.topic = \"batch job 2의 동작 결과\";\n\nvar today = new Date();\ntoday.setHours(today.getHours() + 9);\n\nmsg.payload = msg.payload.replace(/time/g, today.toISOString());\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 480,
+        "wires": [
+            [
+                "ca056075d190e5a2",
+                "6ce6fa301c20f0ee"
+            ]
+        ]
+    },
+    {
+        "id": "d599f5e922e23413",
+        "type": "ui_text",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "order": 8,
+        "width": 10,
+        "height": 1,
+        "name": "job3",
+        "label": "3. job3.sh",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 510,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "d100930594ba23ad",
+        "type": "ui_text",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "order": 11,
+        "width": 10,
+        "height": 1,
+        "name": "job4",
+        "label": "4. job4.sh",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 510,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "d552a0baece80502",
+        "type": "file in",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "filename": "filename",
+        "filenameType": "msg",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 520,
+        "y": 560,
+        "wires": [
+            [
+                "e923db912b244bc3"
+            ]
+        ]
+    },
+    {
+        "id": "0bfced5915aa3e47",
+        "type": "file in",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "filename": "filename",
+        "filenameType": "msg",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 520,
+        "y": 640,
+        "wires": [
+            [
+                "bf87c6082c2992bf"
+            ]
+        ]
+    },
+    {
+        "id": "bf87c6082c2992bf",
+        "type": "change",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "str",
+                "to": "<p>result : <span class=spfalse>false</span>.  [ time ]</p></p>",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "str",
+                "to": "<p>result : <span class=sptrue>true</span>.  [ time ]</p></p>",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 700,
+        "y": 640,
+        "wires": [
+            [
+                "0a59a92f3e580362"
+            ]
+        ]
+    },
+    {
+        "id": "9b01bbef1f23e7a8",
+        "type": "ui_template",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "name": "job4 result",
+        "order": 12,
+        "width": 6,
+        "height": 1,
+        "format": "<style>\ntable {\n    color: #333;\n    font-family: Helvetica, Arial, sans-serif;\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n}\n\nth {\n    background: #DFDFDF;\n    /* Darken header a bit */\n    font-weight: bold;\n}\n\n.spfalse {\n    color: #FF0000;\n    font-weight: bold;\n}\n.sptrue {\n    color: #0000FF;\n    font-weight: bold;\n}\n\n</style>\n\n<div style=\"display: table; height: 400px; overflow: hidden;\">\n  <div style=\"display: table-cell; vertical-align: middle;\">\n   <div ng-bind-html=\"msg.payload\"></div>\n  </div>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1050,
+        "y": 640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e923db912b244bc3",
+        "type": "change",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "str",
+                "to": "<p>result : <span class=spfalse>false</span>. [ time ]</p>",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "str",
+                "to": "<p>result : <span class=sptrue>true</span>. [ time ]</p>",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 700,
+        "y": 560,
+        "wires": [
+            [
+                "4191874aab2d0fcc"
+            ]
+        ]
+    },
+    {
+        "id": "40b837e74d37cc2f",
+        "type": "ui_template",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "name": "job3 result",
+        "order": 9,
+        "width": 6,
+        "height": 1,
+        "format": "<style>\ntable {\n    color: #333;\n    font-family: Helvetica, Arial, sans-serif;\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n}\n\nth {\n    background: #DFDFDF;\n    /* Darken header a bit */\n    font-weight: bold;\n}\n\n.spfalse {\n    color: #FF0000;\n    font-weight: bold;\n\n}\n.sptrue {\n    color: #0000FF;\n    font-weight: bold;\n}\n\n\n</style>\n\n<div style=\"display: table; height: 400px; overflow: hidden;\">\n  <div style=\"display: table-cell; vertical-align: middle;\">\n   <div ng-bind-html=\"msg.payload\"></div>\n  </div>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1050,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4191874aab2d0fcc",
+        "type": "function",
+        "z": "57ab0c9b346de2ed",
+        "name": "function 3",
+        "func": "msg.topic = \"batch job 3의 동작 결과\";\n\nvar today = new Date();\ntoday.setHours(today.getHours() + 9);\n\nmsg.payload = msg.payload.replace(/time/g, today.toISOString());\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 560,
+        "wires": [
+            [
+                "40b837e74d37cc2f",
+                "6ce6fa301c20f0ee"
+            ]
+        ]
+    },
+    {
+        "id": "0a59a92f3e580362",
+        "type": "function",
+        "z": "57ab0c9b346de2ed",
+        "name": "function 4",
+        "func": "msg.topic = \"batch job 4의 동작 결과\";\n\nvar today = new Date();\ntoday.setHours(today.getHours() + 9);\n\nmsg.payload = msg.payload.replace(/time/g, today.toISOString());\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 640,
+        "wires": [
+            [
+                "9b01bbef1f23e7a8",
+                "6ce6fa301c20f0ee"
+            ]
+        ]
+    },
+    {
+        "id": "0d77a95f34a30860",
+        "type": "ui_text",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "order": 14,
+        "width": 10,
+        "height": 1,
+        "name": "job5",
+        "label": "5. job5.sh",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 510,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "059200e3d003f1bb",
+        "type": "file in",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "filename": "filename",
+        "filenameType": "msg",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 520,
+        "y": 720,
+        "wires": [
+            [
+                "7ef5505ff187015c"
+            ]
+        ]
+    },
+    {
+        "id": "7ef5505ff187015c",
+        "type": "change",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "str",
+                "to": "<p>result : <span class=spfalse>false</span>.  [ time ]</p></p>",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "str",
+                "to": "<p>result : <span class=sptrue>true</span>.  [ time ]</p></p>",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 700,
+        "y": 720,
+        "wires": [
+            [
+                "c32eeac6414f8bd5"
+            ]
+        ]
+    },
+    {
+        "id": "22b6e07234b48751",
+        "type": "ui_template",
+        "z": "57ab0c9b346de2ed",
+        "group": "c27d34ccca1ec50f",
+        "name": "job5 result",
+        "order": 15,
+        "width": 6,
+        "height": 1,
+        "format": "<style>\ntable {\n    color: #333;\n    font-family: Helvetica, Arial, sans-serif;\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n}\n\nth {\n    background: #DFDFDF;\n    /* Darken header a bit */\n    font-weight: bold;\n}\n\n.spfalse {\n    color: #FF0000;\n    font-weight: bold;\n}\n.sptrue {\n    color: #0000FF;\n    font-weight: bold;\n}\n\n</style>\n\n<div style=\"display: table; height: 400px; overflow: hidden;\">\n  <div style=\"display: table-cell; vertical-align: middle;\">\n   <div ng-bind-html=\"msg.payload\"></div>\n  </div>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1050,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c32eeac6414f8bd5",
+        "type": "function",
+        "z": "57ab0c9b346de2ed",
+        "name": "function 5",
+        "func": "msg.topic = \"batch job 5\";\n\nvar today = new Date();\ntoday.setHours(today.getHours() + 9);\n\nmsg.payload = msg.payload.replace(/time/g, today.toISOString());\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 720,
+        "wires": [
+            [
+                "22b6e07234b48751",
+                "6ce6fa301c20f0ee"
+            ]
+        ]
+    },
+    {
+        "id": "634232975f7c4caf",
+        "type": "comment",
+        "z": "57ab0c9b346de2ed",
+        "name": "batch job 결과를 저장하고 있는 로그파일의 결과를 모니터링하여 결과를 dashboard 형태로 보여주고, 문제가 발생했을 경우 관제",
+        "info": "",
+        "x": 550,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "6ce6fa301c20f0ee",
+        "type": "e-mail",
+        "z": "57ab0c9b346de2ed",
+        "d": true,
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "cherry24mint@naver.com",
+        "dname": "",
+        "x": 930,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "b3019711f6af0436",
+        "type": "comment",
+        "z": "57ab0c9b346de2ed",
+        "name": "",
+        "info": "",
+        "x": 360,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "4ac6ca9bbd925b10",
+        "type": "ui_spacer",
+        "z": "57ab0c9b346de2ed",
+        "name": "spacer",
+        "group": "c27d34ccca1ec50f",
+        "order": 4,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "c009d14c8eb43423",
+        "type": "ui_spacer",
+        "z": "57ab0c9b346de2ed",
+        "name": "spacer",
+        "group": "c27d34ccca1ec50f",
+        "order": 7,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "8fb8786426b973b6",
+        "type": "ui_spacer",
+        "z": "57ab0c9b346de2ed",
+        "name": "spacer",
+        "group": "c27d34ccca1ec50f",
+        "order": 10,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "aef6b30218264022",
+        "type": "ui_spacer",
+        "z": "57ab0c9b346de2ed",
+        "name": "spacer",
+        "group": "c27d34ccca1ec50f",
+        "order": 13,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "997da0453fa3c63f",
+        "type": "ui_spacer",
+        "z": "57ab0c9b346de2ed",
+        "name": "spacer",
+        "group": "c27d34ccca1ec50f",
+        "order": 16,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "c27d34ccca1ec50f",
+        "type": "ui_group",
+        "name": "Batch Result",
+        "tab": "8fb9e0d415cc8d8f",
+        "order": 1,
+        "disp": true,
+        "width": "18",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8fb9e0d415cc8d8f",
+        "type": "ui_tab",
+        "name": "Batch Job Monitoring",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]

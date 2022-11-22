@@ -1,0 +1,172 @@
+[
+    {
+        "id": "57ab0c9b346de2ed",
+        "type": "tab",
+        "label": "디스크 사용량 모니터링",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2cc160983ecf8a0f",
+        "type": "exec",
+        "z": "57ab0c9b346de2ed",
+        "command": "df -Ph | awk -f stat.awk",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "5",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Get Disk Usages",
+        "x": 290,
+        "y": 360,
+        "wires": [
+            [
+                "eed999b0aaca83ce"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "eed999b0aaca83ce",
+        "type": "function",
+        "z": "57ab0c9b346de2ed",
+        "name": "update msg",
+        "func": "return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 260,
+        "wires": [
+            [
+                "97615107cccf12a4",
+                "a3c8e85f550569fc"
+            ]
+        ]
+    },
+    {
+        "id": "97615107cccf12a4",
+        "type": "debug",
+        "z": "57ab0c9b346de2ed",
+        "name": "msg_normal_output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "a649271113708598",
+        "type": "debug",
+        "z": "57ab0c9b346de2ed",
+        "name": "msg_error_output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "d7856ffe9a11a580",
+        "type": "debug",
+        "z": "57ab0c9b346de2ed",
+        "name": "msg_return_code",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "a3c8e85f550569fc",
+        "type": "ui_template",
+        "z": "57ab0c9b346de2ed",
+        "group": "650dab8239404ec9",
+        "name": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\ntable {\n    color: #333;\n    font-family: Helvetica, Arial, sans-serif;\n    width: 100%;\n    border-collapse: collapse;\n    border-spacing: 0;\n}\n\nth {\n    background: #DFDFDF;\n    /* Darken header a bit */\n    font-weight: bold;\n}\n\n\n</style>\n<div ng-bind-html=\"msg.payload\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 520,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0a9a47a0f23cd999",
+        "type": "ui_button",
+        "z": "57ab0c9b346de2ed",
+        "name": "Refresh",
+        "group": "650dab8239404ec9",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Refresh",
+        "tooltip": "retrieve latest info.",
+        "color": "white",
+        "bgcolor": "red",
+        "className": "",
+        "icon": "autorenew",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 100,
+        "y": 160,
+        "wires": [
+            [
+                "2cc160983ecf8a0f"
+            ]
+        ]
+    },
+    {
+        "id": "650dab8239404ec9",
+        "type": "ui_group",
+        "name": "Disk Usage",
+        "tab": "8fb9e0d415cc8d8f",
+        "order": 1,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8fb9e0d415cc8d8f",
+        "type": "ui_tab",
+        "name": "Disk Usage",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]

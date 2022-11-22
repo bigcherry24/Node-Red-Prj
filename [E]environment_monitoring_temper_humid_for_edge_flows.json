@@ -1,0 +1,659 @@
+[
+    {
+        "id": "af2c0c99a27f8376",
+        "type": "tab",
+        "label": "서버 환경(온/습도} 모니터링",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "725c5029bebfbb79",
+        "type": "tab",
+        "label": "[edge] 서버 환경(온/습도} 모니터링",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "752f2c7d28058321",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#00a3cc",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "reset": false
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": true
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#00a3cc",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1ad1ff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#00a3cc",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "YYYY/MM/DD",
+            "sizes": {
+                "sx": 48,
+                "sy": 64,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "9797a61376694bf2",
+        "type": "serial-port",
+        "serialport": "/dev/ttyACM0",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "4b93c0ba8420520e",
+        "type": "ui_group",
+        "name": "온/습도 센싱",
+        "tab": "6ae174d2a859cb76",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6ae174d2a859cb76",
+        "type": "ui_tab",
+        "name": "서버 환경(온/습도} 모니터링",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "7cb7b8088d57a067",
+        "type": "ui_tab",
+        "name": "[edge] 서버 환경(온/습도) 모니터링",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "179f164fde8ac41a",
+        "type": "ui_group",
+        "name": "[edge] 온/습도 센싱",
+        "tab": "7cb7b8088d57a067",
+        "order": 1,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4d4e4673377d0842",
+        "type": "serial in",
+        "z": "af2c0c99a27f8376",
+        "d": true,
+        "name": "",
+        "serial": "9797a61376694bf2",
+        "x": 230,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bc8c6814e8055529",
+        "type": "function",
+        "z": "af2c0c99a27f8376",
+        "name": "Huminity",
+        "func": "let envResults = flow.get(\"envResults\") || {}\nmsg.thisEnv = envResults[\"Huminity\"] || {};\n\nvar val = msg.payload;\n\n// var result = val.split(',')[0]\nvar result = val;\nvar result1 = { payload: result };\n\nmsg.thisEnv.result = result;\n\nenvResults[\"Huminity\"] = msg.thisEnv;//store ping obj in envResults\nflow.set(\"envResults\", envResults);//save envResults in flow context\n\nreturn [result1];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 300,
+        "wires": [
+            [
+                "9dab869412027f06",
+                "7314223e9b0e9142"
+            ]
+        ]
+    },
+    {
+        "id": "9dab869412027f06",
+        "type": "debug",
+        "z": "af2c0c99a27f8376",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "645e2ae29ef0262e",
+        "type": "function",
+        "z": "af2c0c99a27f8376",
+        "name": "Temp",
+        "func": "let envResults = flow.get(\"envResults\") || {}\nmsg.thisEnv = envResults[\"Temp\"] || {};\n\nvar val = msg.payload;\n\n// var result = val.split(',')[1]\nvar result = val;\nvar result1 = { payload: result };\n\nmsg.thisEnv.result = result;\n\nenvResults[\"Temp\"] = msg.thisEnv;//store ping obj in envResults\nflow.set(\"envResults\", envResults);//save envResults in flow context\n\nreturn [result1];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 460,
+        "wires": [
+            [
+                "ce16bb9791efbce3",
+                "af0a8c9675548790"
+            ]
+        ]
+    },
+    {
+        "id": "ce16bb9791efbce3",
+        "type": "debug",
+        "z": "af2c0c99a27f8376",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "7314223e9b0e9142",
+        "type": "ui_gauge",
+        "z": "af2c0c99a27f8376",
+        "name": "",
+        "group": "4b93c0ba8420520e",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "습도",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 790,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "af0a8c9675548790",
+        "type": "ui_gauge",
+        "z": "af2c0c99a27f8376",
+        "name": "",
+        "group": "4b93c0ba8420520e",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "온도",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 770,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "de50fc39156cbbf0",
+        "type": "http in",
+        "z": "af2c0c99a27f8376",
+        "name": "",
+        "url": "/remoteSensor",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 290,
+        "y": 640,
+        "wires": [
+            [
+                "f24917a8ed2c9290"
+            ]
+        ]
+    },
+    {
+        "id": "b11fe50f81ac80e5",
+        "type": "function",
+        "z": "af2c0c99a27f8376",
+        "name": "function 1",
+        "func": "let envResults = flow.get(\"envResults\") || {}\n\nconsole.log(\"envR=\" + envResults[\"Temp\"].result);\n\nreturn envResults[\"Temp\"].result;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5dba6a9088211497",
+        "type": "http response",
+        "z": "af2c0c99a27f8376",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 670,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "446fae84362afb9c",
+        "type": "inject",
+        "z": "af2c0c99a27f8376",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "10,20",
+        "payloadType": "str",
+        "x": 170,
+        "y": 360,
+        "wires": [
+            [
+                "491470b8264bd9fa",
+                "835136f5bd33a6cb"
+            ]
+        ]
+    },
+    {
+        "id": "f24917a8ed2c9290",
+        "type": "template",
+        "z": "af2c0c99a27f8376",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\n    \"temperature\" : {{ flow.envResults.Temp.result }},\n    \"huminity\" : {{ flow.envResults.Huminity.result }}\n}",
+        "output": "json",
+        "x": 500,
+        "y": 640,
+        "wires": [
+            [
+                "5dba6a9088211497",
+                "ce25e4891e271cb8"
+            ]
+        ]
+    },
+    {
+        "id": "ce25e4891e271cb8",
+        "type": "debug",
+        "z": "af2c0c99a27f8376",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "491470b8264bd9fa",
+        "type": "random",
+        "z": "af2c0c99a27f8376",
+        "name": "",
+        "low": 1,
+        "high": "100",
+        "inte": "true",
+        "property": "payload",
+        "x": 320,
+        "y": 360,
+        "wires": [
+            [
+                "bc8c6814e8055529"
+            ]
+        ]
+    },
+    {
+        "id": "835136f5bd33a6cb",
+        "type": "random",
+        "z": "af2c0c99a27f8376",
+        "name": "",
+        "low": 1,
+        "high": "50",
+        "inte": "true",
+        "property": "payload",
+        "x": 320,
+        "y": 440,
+        "wires": [
+            [
+                "645e2ae29ef0262e"
+            ]
+        ]
+    },
+    {
+        "id": "db8eb2de3b7aa0b8",
+        "type": "comment",
+        "z": "af2c0c99a27f8376",
+        "name": "edge 구성을 위해 flow context에 데이터 저장",
+        "info": "",
+        "x": 630,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "dc21691efb655bc8",
+        "type": "comment",
+        "z": "af2c0c99a27f8376",
+        "name": "edge 구성을 위핸 flow context 데이터를 http in 으로 서비스",
+        "info": "",
+        "x": 410,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "b56877657cd59d97",
+        "type": "http request",
+        "z": "725c5029bebfbb79",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:1881/remoteSensor",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 390,
+        "y": 200,
+        "wires": [
+            [
+                "cd0810e9ab1e1273",
+                "9eb653a786fb202f"
+            ]
+        ]
+    },
+    {
+        "id": "fba87beb49a79aed",
+        "type": "debug",
+        "z": "725c5029bebfbb79",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "cb12ea974ab9bc82",
+        "type": "inject",
+        "z": "725c5029bebfbb79",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 200,
+        "wires": [
+            [
+                "b56877657cd59d97"
+            ]
+        ]
+    },
+    {
+        "id": "cd0810e9ab1e1273",
+        "type": "function",
+        "z": "725c5029bebfbb79",
+        "name": "function 2",
+        "func": "var val = msg.payload;\n\nvar msg1 = { payload: val[\"temperature\"] };\nvar msg2 = { payload: val[\"huminity\"] };\n\nreturn [ msg1, msg2 ];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 320,
+        "wires": [
+            [
+                "fba87beb49a79aed",
+                "806be863a066165b"
+            ],
+            [
+                "e011a2e57bdc133a",
+                "4cd3174853f534b8"
+            ]
+        ]
+    },
+    {
+        "id": "e011a2e57bdc133a",
+        "type": "debug",
+        "z": "725c5029bebfbb79",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "9eb653a786fb202f",
+        "type": "debug",
+        "z": "725c5029bebfbb79",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "4cd3174853f534b8",
+        "type": "ui_gauge",
+        "z": "725c5029bebfbb79",
+        "name": "",
+        "group": "179f164fde8ac41a",
+        "order": 1,
+        "width": 4,
+        "height": 4,
+        "gtype": "gage",
+        "title": "습도",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 650,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "806be863a066165b",
+        "type": "ui_gauge",
+        "z": "725c5029bebfbb79",
+        "name": "",
+        "group": "179f164fde8ac41a",
+        "order": 2,
+        "width": 4,
+        "height": 4,
+        "gtype": "gage",
+        "title": "온도",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 650,
+        "y": 320,
+        "wires": []
+    }
+]

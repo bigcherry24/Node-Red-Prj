@@ -1,0 +1,549 @@
+[
+    {
+        "id": "25aca8f1576ffb06",
+        "type": "tab",
+        "label": "CPU 사용량 모니터링",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "84ebfa94f3582832",
+        "type": "exec",
+        "z": "25aca8f1576ffb06",
+        "command": "awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat)",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "5",
+        "winHide": false,
+        "oldrc": false,
+        "name": "cpu usage command",
+        "x": 180,
+        "y": 340,
+        "wires": [
+            [
+                "62024ff29ee5d440"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "2a24011a4cb4427e",
+        "type": "inject",
+        "z": "25aca8f1576ffb06",
+        "name": "*** Setup resources to fetch here ***",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"name\":\"cpu\"},{\"name\":\"mem\"}]",
+        "payloadType": "json",
+        "x": 190,
+        "y": 160,
+        "wires": [
+            [
+                "36cbddb1a4081653"
+            ]
+        ]
+    },
+    {
+        "id": "36cbddb1a4081653",
+        "type": "split",
+        "z": "25aca8f1576ffb06",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 430,
+        "y": 160,
+        "wires": [
+            [
+                "05125168863f504c"
+            ]
+        ]
+    },
+    {
+        "id": "62024ff29ee5d440",
+        "type": "function",
+        "z": "25aca8f1576ffb06",
+        "name": "update thisRsm",
+        "func": "\nmsg.thisRsm.timestamp = new Date();\nmsg.thisRsm.message = msg.payload;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 380,
+        "wires": [
+            [
+                "77ed2c1d410fc5b1",
+                "b012295091bf24b7"
+            ]
+        ]
+    },
+    {
+        "id": "25c0966d7dac82b0",
+        "type": "function",
+        "z": "25aca8f1576ffb06",
+        "name": "update thisRsm",
+        "func": "\nmsg.thisRsm.timestamp = new Date();\nmsg.thisRsm.message = msg.payload;\nmsg.thisRsm.error = true;\nmsg.thisRsm.state = 'ng'\n\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 420,
+        "wires": [
+            [
+                "91a25ee3c600631c",
+                "b012295091bf24b7"
+            ]
+        ]
+    },
+    {
+        "id": "27ff76d47df4c24d",
+        "type": "function",
+        "z": "25aca8f1576ffb06",
+        "name": "update thisRsm",
+        "func": "msg.thisRsm.timestamp = new Date();\nmsg.thisRsm.result = msg.payload;\nmsg.thisRsm.error = msg.payload.code !== 0;\nmsg.thisRsm.state = msg.thisRsm.error === false ? \"ok\" : \"ng\";\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 460,
+        "wires": [
+            [
+                "89a1c76172ae9077",
+                "b012295091bf24b7"
+            ]
+        ]
+    },
+    {
+        "id": "05125168863f504c",
+        "type": "function",
+        "z": "25aca8f1576ffb06",
+        "name": "Init thisRsm",
+        "func": "let rsmResults = flow.get(\"rsmResults\") || {}\nmsg.thisRsm = rsmResults[msg.topic] || {};\n\nmsg.thisRsm.name = msg.payload.name;\nmsg.thisRsm.timestamp = new Date();\nmsg.thisRsm.result = '';\nmsg.thisRsm.error = null;\nmsg.thisRsm.state = 'fetching';\n\nmsg.topic = msg.thisRsm.name;\n\nrsmResults[msg.topic] = msg.thisRsm;//store ping obj in rsmResults\nflow.set(\"rsmResults\",rsmResults);//save rsmResults in flow context\n\nconsole.log(msg.payload.name);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 160,
+        "wires": [
+            [
+                "d0957d41a2040121",
+                "5ebff1811b1c7989"
+            ]
+        ]
+    },
+    {
+        "id": "d0957d41a2040121",
+        "type": "debug",
+        "z": "25aca8f1576ffb06",
+        "name": "msg_first",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "77ed2c1d410fc5b1",
+        "type": "debug",
+        "z": "25aca8f1576ffb06",
+        "name": "msg_normal_output",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "91a25ee3c600631c",
+        "type": "debug",
+        "z": "25aca8f1576ffb06",
+        "name": "msg_error_output",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "89a1c76172ae9077",
+        "type": "debug",
+        "z": "25aca8f1576ffb06",
+        "name": "msg_return_code",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "b012295091bf24b7",
+        "type": "function",
+        "z": "25aca8f1576ffb06",
+        "name": "Update flow context",
+        "func": "let rsmResults = flow.get(\"rsmResults\") || {}\nlet thisRsm = msg.thisRsm;\n\n//store ping item\nrsmResults[thisRsm.name] = thisRsm;\n\n//save rsmResults in flow context\nflow.set(\"rsmResults\",rsmResults);\n\n//console.log(msg);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c532a7a545d852f5",
+        "type": "debug",
+        "z": "25aca8f1576ffb06",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "4cf86409606b47b5",
+        "type": "inject",
+        "z": "25aca8f1576ffb06",
+        "name": "Inject",
+        "props": [],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 90,
+        "y": 700,
+        "wires": [
+            [
+                "417a547163c79289"
+            ]
+        ]
+    },
+    {
+        "id": "417a547163c79289",
+        "type": "function",
+        "z": "25aca8f1576ffb06",
+        "name": "convert rmsResults to array",
+        "func": "let rsmResults = flow.get(\"rsmResults\") || {}\n\nlet tempVal = \"0\";\nlet resourcesData = [];\n\nfor (let k in rsmResults) {\n\n    let r = rsmResults[k];\n    \n    if(r.name == \"cpu\"){\n        \n        if (typeof r.message === \"string\") \n        tempVal = r.message.replace(/\\n/g,\" \").trim();\n        \n        console.log(\"cpuTempval = \" + Math.round(tempVal*100)/100);\n        \n        r.payload = Math.round((tempVal*100)/100);\n    \n        \n    } else if(r.name == \"mem\") {\n        \n        if (typeof r.message === \"string\") \n        tempVal = r.message.trim();\n         \n        console.log(\"memTempval = \" + tempVal);\n        \n        var m = {};\n        m.labels = [\"used\", \"fee\"];\n        m.data = [[tempVal, 100 - tempVal]];\n        m.series = [\"mem\"];\n        \n        r.payload = [m];\n    }\n    \n    resourcesData.push(r);\n}\n\nmsg.resourcesData = resourcesData;\n\nconsole.log(msg);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 700,
+        "wires": [
+            [
+                "c532a7a545d852f5",
+                "6551bbb8e647ca29",
+                "a7b2800121dbda0d"
+            ]
+        ]
+    },
+    {
+        "id": "c0cefaaf14366e1f",
+        "type": "ui_chart",
+        "z": "25aca8f1576ffb06",
+        "name": "",
+        "group": "9cb3c925bbc49e3c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "CPU Usage Chart",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "step",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": "30",
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#d62728",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 770,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5ebff1811b1c7989",
+        "type": "switch",
+        "z": "25aca8f1576ffb06",
+        "name": "",
+        "property": "payload.name",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "cpu",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "mem",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 530,
+        "y": 240,
+        "wires": [
+            [
+                "84ebfa94f3582832"
+            ],
+            [
+                "f6efd4eb3ab316c2"
+            ]
+        ]
+    },
+    {
+        "id": "f6efd4eb3ab316c2",
+        "type": "exec",
+        "z": "25aca8f1576ffb06",
+        "command": "free | grep Mem | awk '{print $3/$2 * 100.0}'",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "5",
+        "winHide": false,
+        "oldrc": false,
+        "name": "memory usage command",
+        "x": 190,
+        "y": 440,
+        "wires": [
+            [
+                "62024ff29ee5d440"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "501c2627ceec382c",
+        "type": "ui_chart",
+        "z": "25aca8f1576ffb06",
+        "name": "",
+        "group": "9cb3c925bbc49e3c",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "memory usage chart",
+        "chartType": "pie",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": "30",
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#ff7f0e",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 780,
+        "y": 840,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "19482ce7fb8d3bd1",
+        "type": "debug",
+        "z": "25aca8f1576ffb06",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "fba99b0d55074ba0",
+        "type": "debug",
+        "z": "25aca8f1576ffb06",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "6551bbb8e647ca29",
+        "type": "function",
+        "z": "25aca8f1576ffb06",
+        "name": "cpu filter",
+        "func": "return msg.resourcesData[0];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 760,
+        "wires": [
+            [
+                "19482ce7fb8d3bd1",
+                "c0cefaaf14366e1f"
+            ]
+        ]
+    },
+    {
+        "id": "a7b2800121dbda0d",
+        "type": "function",
+        "z": "25aca8f1576ffb06",
+        "name": "memory filter",
+        "func": "return msg.resourcesData[1];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 800,
+        "wires": [
+            [
+                "fba99b0d55074ba0",
+                "501c2627ceec382c"
+            ]
+        ]
+    },
+    {
+        "id": "7a3b3f5a641b3668",
+        "type": "ui_spacer",
+        "z": "25aca8f1576ffb06",
+        "name": "spacer",
+        "group": "9cb3c925bbc49e3c",
+        "order": 2,
+        "width": "10",
+        "height": "1"
+    },
+    {
+        "id": "9cb3c925bbc49e3c",
+        "type": "ui_group",
+        "name": "CPU & Memory Usage Monitoring",
+        "tab": "85db27df95fe846f",
+        "order": 2,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "85db27df95fe846f",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
