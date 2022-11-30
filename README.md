@@ -6,7 +6,7 @@ LCDP_Prj
 This source code is the result of experiments conducted for the purpose of the paper.
 
 It is a Node-RED flow file implemented using node-RED for integrated monitoring of IT services.   
-<br>
+<br/>
 
 |#|purpose|file|
 |------|---|---|
@@ -19,5 +19,12 @@ It is a Node-RED flow file implemented using node-RED for integrated monitoring 
 |7|Process monitoring |[E]process_monitoring_flows.json|
 |8|CPU & Memory monitoring |[E]resouces_monitoring_cpu_memory_flows.json|
 |9|Disk usage monitoring |[E]resouces_monitoring_disk_flows.json|
-|10|Webservice Monitoring|테스트3|
+|10|Webservice Monitoring|[E]webservice_monitoring_flows.json|
 |11|bundle version |[E]universe_monitoring_flows_at_Azure.json|
+
+<br/>
+
+
+<img src="/flow_example.png" title="example flow image" alt="Example of Flow image"></img><br/>
+
+<img src="/yonsei_logo.png" width="120px" title="yonsei university logo" alt="yonsei university loog"></img>   <img src="/node-red-logo.png" width="120px" title="node red logo" alt="node red logo"></img><br/>
